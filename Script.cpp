@@ -74,12 +74,12 @@ namespace prog {
             // usage: "replace r1 g1 b1 r2 g2 b2"
             // Replaces all (r1,  g1, b1) pixels by (r2,  g2, b2).
             if (command == "replace") {
-                Color c1, c2;
-                input >> c1.red() >> c1.green() >> c1.blue() >> c2.red() >> c2.green() >> c2.blue();
+                Color color_1, color_2;
+                input >> color_1.red() >> color_1.green() >> color_1.blue() >> color_2.red() >> color_2.green() >> color_2.blue();
                 for (int i = 0; i < image->height(); i++) {
                     for (int j = 0; j < image->width(); j++) {
-                        if (image->at(i, j).red() == c1.red() && image->at(i, j).green() == c1.green() && image->at(i, j).blue() == c1.blue()) {
-                            image->at(i, j) = c2;
+                        if (image->at(i, j).red() == color_1.red() && image->at(i, j).green() == color_1.green() && image->at(i, j).blue() == color_1.blue()) {
+                            image->at(i, j) = color_2;
                         }
                     }
                 }
@@ -113,9 +113,9 @@ namespace prog {
             if (command == "v_mirror") {
                 for (int i = 0; i < image->height() / 2; i++) {
                     for (int j = 0; j < image->width(); j++) {
-                        Color temp = image->at(i, j);
+                        Color color_temp = image->at(i, j);
                         image->at(i, j) = image->at(image->height() - i - 1, j);
-                        image->at(image->height() - i - 1, j) = temp;
+                        image->at(image->height() - i - 1, j) = color_temp;
                     }
                 }
                 continue;
@@ -127,15 +127,15 @@ namespace prog {
                 Color neutral;
                 int top_corner_x, top_corner_y;
                 input >> filename >> neutral.red() >> neutral.green() >> neutral.blue() >> top_corner_x >> top_corner_y;
-                Image* image2 = loadFromPNG(filename);
-                for (int i = 0; i < image2->height(); i++) {
-                    for (int j = 0; j < image2->width(); j++) {
-                        if (image2->at(i, j).red() != neutral.red() || image2->at(i, j).green() != neutral.green() || image2->at(i, j).blue() != neutral.blue()) {
-                            image->at(i + top_corner_x, j + top_corner_y) = image2->at(i, j);
+                Image* image_to_add = loadFromPNG(filename);
+                for (int i = 0; i < image_to_add->height(); i++) {
+                    for (int j = 0; j < image_to_add->width(); j++) {
+                        if (image_to_add->at(i, j).red() != neutral.red() || image_to_add->at(i, j).green() != neutral.green() || image_to_add->at(i, j).blue() != neutral.blue()) {
+                            image->at(i + top_corner_x, j + top_corner_y) = image_to_add->at(i, j);
                         }
                     }
                 }
-                delete image2;
+                delete image_to_add;
                 continue;
             }
             // usage: "crop x y w h"
@@ -143,14 +143,14 @@ namespace prog {
             if (command == "crop") {
                 int top_corner_x, top_corner_y, width, height;
                 input >> top_corner_x >> top_corner_y >> width >> height;
-                Image* image2 = new Image(width, height);
+                Image* image_temp = new Image(width, height);
                 for (int i = 0; i < height; i++) {
                     for (int j = 0; j < width; j++) {
-                        image2->at(i, j) = image->at(i + top_corner_x, j + top_corner_y);
+                        image_temp->at(i, j) = image->at(i + top_corner_x, j + top_corner_y);
                     }
                 }
-                image = image2;
-                delete image2;
+                image = image_temp;
+                delete image_temp;
                 continue;
             }
             // Rotate image left by 90 degrees.
@@ -167,14 +167,14 @@ namespace prog {
             }
             // Rotate image right by 90 degrees.
             if (command == "rotate_right") {
-                Image* image2 = new Image(image->width(), image->height());
+                Image* image_temp = new Image(image->width(), image->height());
                 for (int i = 0; i < image->height(); i++) {
                     for (int j = 0; j < image->width(); j++) {
-                        image2->at(i, j) = image->at(image->width() - j - 1, i);
+                        image_temp->at(i, j) = image->at(image->width() - j - 1, i);
                     }
                 }
-                image = image2;
-                delete image2;
+                image = image_temp;
+                delete image_temp;
                 continue;
             }
         }
