@@ -63,10 +63,10 @@ namespace prog {
             if (command == "to_gray_scale") {
                 for (int i = 0; i < image->height(); i++) {
                     for (int j = 0; j < image->width(); j++) {
-                        int gray = (image->at(i, j).red() + image->at(i, j).green() + image->at(i, j).blue()) / 3;
-                        image->at(i, j).red() = gray;
-                        image->at(i, j).green() = gray;
-                        image->at(i, j).blue() = gray;
+                        int gray = (image->at(j, i).red() + image->at(j, i).green() + image->at(j, i).blue()) / 3;
+                        image->at(j, i).red() = gray;
+                        image->at(j, i).green() = gray;
+                        image->at(j, i).blue() = gray;
                     }
                 }
                 continue;
