@@ -13,21 +13,21 @@ namespace prog {
         this->_blue = blue;
     }
     rgb_value Color::red() const {
-        return _red;
+        return this->_red;
     }
     rgb_value Color::green() const {
-        return _green;
+        return this->_green;
     }
     rgb_value Color::blue() const {
-        return _blue;
+        return this->_blue;
     }
     rgb_value& Color::red()  {
-        return _red;
+        return this->_red;
     }
     rgb_value& Color::green()  {
-      return _green;
+      return this->_green;
     }
     rgb_value& Color::blue()  {
-      return _blue;
+      return this->_blue;
     }
 }

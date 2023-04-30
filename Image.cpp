@@ -1,32 +1,40 @@
 #include "Image.hpp"
 
+#include <iostream>
+
 namespace prog
 {
   Image::Image(int w, int h, const Color &fill)
   {
+    this->_width = w;
+    this->_height = h;
+    // array de cores de 1 dimensao (mas que vai ser utilizado como se fosse uma matriz de 2 dimensões) com tamanho w * h e preenchido com a cor fill
+    this->_image = new Color[this->_width * this->_height];
+    for (int i = 0; i < this->_width * this->_height; i++)
+    {
+      this->_image[i] = fill;
+    }
   }
   Image::~Image()
   {
+    delete[] _image;
   }
   int Image::width() const
   {
-    return -1;
+    return this->_width;
   }
   int Image::height() const
   {
-    return -1;
+    return this->_height;
   }
-
-  // TODO: remove this DUMMY_color variable once you have appropriate fields for representing image pixels.
-  Color DUMMY_color;
 
   Color& Image::at(int x, int y)
   {
-    return DUMMY_color;
+    return this->_image[x + y * this->_width];
   }
 
   const Color& Image::at(int x, int y) const
   {
-    return DUMMY_color;
+    return this->_image[x + y * this->_width];
   }
 }

@@ -8,6 +8,9 @@ namespace prog
   {
   private:
     // TODO: define private fields for image state
+    int _width;
+    int _height;
+    Color *_image;
   public:
     Image(int w, int h, const Color &fill = {255, 255, 255});
     ~Image();
