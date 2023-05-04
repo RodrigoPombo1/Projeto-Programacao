@@ -91,31 +91,31 @@ namespace prog {
                 int top_corner_x, top_corner_y, width, height;
                 Color fill;
                 input >> top_corner_x >> top_corner_y >> width >> height >> fill.red() >> fill.green() >> fill.blue();
-                for (int i = top_corner_y; i < height; i++) {
-                    for (int j = top_corner_x; j < width; j++) {
-                        image->at(j, i) = fill;
+                for (int y = top_corner_y; y < height; y++) {
+                    for (int x = top_corner_x; x < width; x++) {
+                        image->at(x, y) = fill;
                     }
                 }
                 continue;
             }
             // Mirror image horizontally.
             if (command == "h_mirror") {
-                for (int i = 0; i < image->height(); i++) {
-                    for (int j = 0; j < image->width() / 2; j++) {
-                        Color temp = image->at(j, i);
-                        image->at(j, i) = image->at(image->width() - j - 1, i);
-                        image->at(image->width() - j - 1, i) = temp;
+                for (int y = 0; y < image->height(); y++) {
+                    for (int x = 0; x < image->width() / 2; x++) {
+                        Color temp = image->at(x, y);
+                        image->at(x, y) = image->at(image->width() - x - 1, y);
+                        image->at(image->width() - x - 1, y) = temp;
                     }
                 }
                 continue;
             }
             // Mirror image vertically.
             if (command == "v_mirror") {
-                for (int i = 0; i < image->height() / 2; i++) {
-                    for (int j = 0; j < image->width(); j++) {
-                        Color color_temp = image->at(j, i);
-                        image->at(j, i) = image->at(j, image->height() - i - 1);
-                        image->at(j, image->height() - i - 1) = color_temp;
+                for (int y = 0; y < image->height() / 2; y++) {
+                    for (int x = 0; x < image->width(); x++) {
+                        Color color_temp = image->at(x, y);
+                        image->at(x, y) = image->at(x, image->height() - y - 1);
+                        image->at(x, image->height() - y - 1) = color_temp;
                     }
                 }
                 continue;
@@ -128,10 +128,10 @@ namespace prog {
                 int top_corner_x, top_corner_y;
                 input >> filename >> neutral.red() >> neutral.green() >> neutral.blue() >> top_corner_x >> top_corner_y;
                 Image* image_to_add = loadFromPNG(filename);
-                for (int i = 0; i < image_to_add->height(); i++) {
-                    for (int j = 0; j < image_to_add->width(); j++) {
-                        if (image_to_add->at(j, i).red() != neutral.red() || image_to_add->at(j, i).green() != neutral.green() || image_to_add->at(j, i).blue() != neutral.blue()) {
-                            image->at(j + top_corner_x, i + top_corner_y) = image_to_add->at(j, i);
+                for (int y = 0; y < image_to_add->height(); y++) {
+                    for (int x = 0; x < image_to_add->width(); x++) {
+                        if (image_to_add->at(x, y).red() != neutral.red() || image_to_add->at(x, y).green() != neutral.green() || image_to_add->at(x, y).blue() != neutral.blue()) {
+                            image->at(x + top_corner_x, y + top_corner_y) = image_to_add->at(x, y);
                         }
                     }
                 }
@@ -143,9 +143,9 @@ namespace prog {
                 int top_corner_x, top_corner_y, width, height;
                 input >> top_corner_x >> top_corner_y >> width >> height;
                 Image image_temp = Image(width, height);
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        image_temp.at(i, j) = image->at(i + top_corner_x, j + top_corner_y);
+                for (int y = 0; y < height; y++) {
+                    for (int x = 0; x < width; x++) {
+                        image_temp.at(x, y) = image->at(x + top_corner_x, y + top_corner_y);
                     }
                 }
                 image = &image_temp;
@@ -154,9 +154,9 @@ namespace prog {
             // Rotate image left by 90 degrees.
             if (command == "rotate_left") {
                 Image* image_temp = new Image(image->height(), image->width());
-                for (int i = 0; i < image->height(); i++) {
-                    for (int j = 0; j < image->width(); j++) {
-                        image_temp->at(i, j) = image->at(image->width() - j - 1, i);
+                for (int y = 0; y < image->height(); y++) {
+                    for (int x = 0; x < image->width(); x++) {
+                        image_temp->at(y, x) = image->at(image->width() - x - 1, y);
                     }
                 }
                 image = image_temp;
@@ -165,9 +165,9 @@ namespace prog {
             // Rotate image right by 90 degrees.
             if (command == "rotate_right") {
                 Image* image_temp = new Image(image->height(), image->width());
-                for (int i = 0; i < image->height(); i++) {
-                    for (int j = 0; j < image->width(); j++) {
-                        image_temp->at(i, j) = image->at(j, i - image->height() - 1);
+                for (int y = 0; y < image->height(); y++) {
+                    for (int x = 0; x < image->width(); x++) {
+                        image_temp->at(y, x) = image->at(x, y - image->height() - 1);
                     }
                 }
                 image = image_temp;
