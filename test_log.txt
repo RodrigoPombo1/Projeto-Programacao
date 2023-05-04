@@ -1,27 +1,426 @@
->>>> [1] basic_blank1 <<<<
-Executing command 'blank' ...
-Executing command 'save' ...
->>>> [2] basic_blank1.txt:Zone <<<<
-Could not load image from ./expected/basic_blank1.txt:Zone.png
->>>> [3] basic_blank2 <<<<
-Executing command 'blank' ...
-Executing command 'save' ...
->>>> [4] basic_blank2.txt:Zone <<<<
-Could not load image from ./expected/basic_blank2.txt:Zone.png
->>>> [5] basic_blank3 <<<<
-Executing command 'blank' ...
-Executing command 'blank' ...
-Executing command 'save' ...
->>>> [6] basic_blank3.txt:Zone <<<<
-Could not load image from ./expected/basic_blank3.txt:Zone.png
->>>> [7] basic_open1 <<<<
+>>>> [1] crop1 <<<<
 Executing command 'open' ...
+Executing command 'crop' ...
 Executing command 'save' ...
->>>> [8] basic_open1.txt:Zone <<<<
-Could not load image from ./expected/basic_open1.txt:Zone.png
->>>> [9] basic_open2 <<<<
+=================================================================
+==10618==ERROR: AddressSanitizer: stack-use-after-scope on address 0x7ffee8123814 at pc 0x556a139f2595 bp 0x7ffee8123440 sp 0x7ffee8123430
+READ of size 4 at 0x7ffee8123814 thread T0
+    #0 0x556a139f2594 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
+    #1 0x556a13a3d748 in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
+    #2 0x556a139fa516 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:197
+    #3 0x556a139f3773 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:48
+    #4 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #5 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #6 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #7 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #9 0x7f6d272cee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #10 0x556a139e2f14 in _start (/home/rodri/prog/Projeto-Programacao/test+0x7cf14)
+
+Address 0x7ffee8123814 is located in stack of thread T0 at offset 356 in frame
+    #0 0x556a139f33eb in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:34
+
+  This frame has 22 object(s):
+    [48, 51) 'color_1' (line 77)
+    [64, 67) 'color_2' (line 77)
+    [80, 83) 'fill' (line 92)
+    [96, 99) 'temp' (line 105)
+    [112, 115) 'color_temp' (line 116)
+    [128, 131) 'neutral' (line 127)
+    [144, 147) '<unknown>'
+    [160, 163) '<unknown>'
+    [176, 179) '<unknown>'
+    [192, 196) 'top_corner_x' (line 91)
+    [208, 212) 'top_corner_y' (line 91)
+    [224, 228) 'width' (line 91)
+    [240, 244) 'height' (line 91)
+    [256, 260) 'top_corner_x' (line 128)
+    [272, 276) 'top_corner_y' (line 128)
+    [288, 292) 'top_corner_x' (line 143)
+    [304, 308) 'top_corner_y' (line 143)
+    [320, 324) 'width' (line 143)
+    [336, 340) 'height' (line 143)
+    [352, 368) 'image_temp' (line 145) <== Memory access at offset 356 is inside this variable
+    [384, 416) 'command' (line 35)
+    [448, 480) 'filename' (line 126)
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-scope /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
+Shadow bytes around the buggy address:
+  0x10005d01c6b0: 00 00 00 00 f3 f3 f3 f3 00 00 00 00 00 00 00 00
+  0x10005d01c6c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10005d01c6d0: 00 00 00 00 00 00 f1 f1 f1 f1 f1 f1 03 f2 03 f2
+  0x10005d01c6e0: 03 f2 03 f2 03 f2 03 f2 f8 f2 03 f2 03 f2 04 f2
+  0x10005d01c6f0: 04 f2 04 f2 04 f2 04 f2 04 f2 f8 f2 f8 f2 f8 f2
+=>0x10005d01c700: f8 f2[f8]f8 f2 f2 00 00 00 00 f2 f2 f2 f2 00 00
+  0x10005d01c710: 00 00 f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00
+  0x10005d01c720: 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 f2 f2
+  0x10005d01c730: f2 f2 f8 f8 f8 f8 f2 f2 f2 f2 f8 f8 f8 f8 f2 f2
+  0x10005d01c740: f2 f2 00 00 00 00 f2 f2 f2 f2 f8 f8 f8 f8 f2 f2
+  0x10005d01c750: f2 f2 f8 f8 f8 f8 f2 f2 f2 f2 00 00 00 00 f2 f2
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==10618==ABORTING
+>>>> [2] crop2 <<<<
 Executing command 'open' ...
-Executing command 'open' ...
+Executing command 'crop' ...
 Executing command 'save' ...
->>>> [10] basic_open2.txt:Zone <<<<
-Could not load image from ./expected/basic_open2.txt:Zone.png
+=================================================================
+==10633==ERROR: AddressSanitizer: stack-use-after-scope on address 0x7ffee8123814 at pc 0x556a139f2595 bp 0x7ffee8123440 sp 0x7ffee8123430
+READ of size 4 at 0x7ffee8123814 thread T0
+    #0 0x556a139f2594 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
+    #1 0x556a13a3d748 in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
+    #2 0x556a139fa516 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:197
+    #3 0x556a139f3773 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:48
+    #4 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #5 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #6 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #7 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #9 0x7f6d272cee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #10 0x556a139e2f14 in _start (/home/rodri/prog/Projeto-Programacao/test+0x7cf14)
+
+Address 0x7ffee8123814 is located in stack of thread T0 at offset 356 in frame
+    #0 0x556a139f33eb in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:34
+
+  This frame has 22 object(s):
+    [48, 51) 'color_1' (line 77)
+    [64, 67) 'color_2' (line 77)
+    [80, 83) 'fill' (line 92)
+    [96, 99) 'temp' (line 105)
+    [112, 115) 'color_temp' (line 116)
+    [128, 131) 'neutral' (line 127)
+    [144, 147) '<unknown>'
+    [160, 163) '<unknown>'
+    [176, 179) '<unknown>'
+    [192, 196) 'top_corner_x' (line 91)
+    [208, 212) 'top_corner_y' (line 91)
+    [224, 228) 'width' (line 91)
+    [240, 244) 'height' (line 91)
+    [256, 260) 'top_corner_x' (line 128)
+    [272, 276) 'top_corner_y' (line 128)
+    [288, 292) 'top_corner_x' (line 143)
+    [304, 308) 'top_corner_y' (line 143)
+    [320, 324) 'width' (line 143)
+    [336, 340) 'height' (line 143)
+    [352, 368) 'image_temp' (line 145) <== Memory access at offset 356 is inside this variable
+    [384, 416) 'command' (line 35)
+    [448, 480) 'filename' (line 126)
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-scope /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
+Shadow bytes around the buggy address:
+  0x10005d01c6b0: 00 00 00 00 f3 f3 f3 f3 00 00 00 00 00 00 00 00
+  0x10005d01c6c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10005d01c6d0: 00 00 00 00 00 00 f1 f1 f1 f1 f1 f1 03 f2 03 f2
+  0x10005d01c6e0: 03 f2 03 f2 03 f2 03 f2 f8 f2 03 f2 03 f2 04 f2
+  0x10005d01c6f0: 04 f2 04 f2 04 f2 04 f2 04 f2 f8 f2 f8 f2 f8 f2
+=>0x10005d01c700: f8 f2[f8]f8 f2 f2 00 00 00 00 f2 f2 f2 f2 00 00
+  0x10005d01c710: 00 00 f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00
+  0x10005d01c720: 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 f2 f2
+  0x10005d01c730: f2 f2 f8 f8 f8 f8 f2 f2 f2 f2 f8 f8 f8 f8 f2 f2
+  0x10005d01c740: f2 f2 00 00 00 00 f2 f2 f2 f2 f8 f8 f8 f8 f2 f2
+  0x10005d01c750: f2 f2 f8 f8 f8 f8 f2 f2 f2 f2 00 00 00 00 f2 f2
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==10633==ABORTING
+>>>> [3] crop3 <<<<
+Executing command 'open' ...
+Executing command 'crop' ...
+Executing command 'crop' ...
+=================================================================
+==10643==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x62c0000077c6 at pc 0x556a139f8106 bp 0x7ffee8123610 sp 0x7ffee8123600
+READ of size 3 at 0x62c0000077c6 thread T0
+    #0 0x556a139f8105 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:148
+    #1 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #2 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #3 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #4 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #5 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #6 0x7f6d272cee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #7 0x556a139e2f14 in _start (/home/rodri/prog/Projeto-Programacao/test+0x7cf14)
+
+0x62c0000077c6 is located 150 bytes to the right of 30000-byte region [0x62c000000200,0x62c000007730)
+allocated by thread T0 here:
+    #0 0x7f6d27ee9337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x556a139f1f49 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x556a139f7e32 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:145
+    #3 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #4 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #5 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #6 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/rodri/prog/Projeto-Programacao/Script.cpp:148 in prog::Script::run()
+Shadow bytes around the buggy address:
+  0x0c587fff8ea0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c587fff8eb0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c587fff8ec0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c587fff8ed0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c587fff8ee0: 00 00 00 00 00 00 fa fa fa fa fa fa fa fa fa fa
+=>0x0c587fff8ef0: fa fa fa fa fa fa fa fa[fa]fa fa fa fa fa fa fa
+  0x0c587fff8f00: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c587fff8f10: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c587fff8f20: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c587fff8f30: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c587fff8f40: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==10643==ABORTING
+>>>> [4] crop4 <<<<
+Executing command 'open' ...
+Executing command 'crop' ...
+Executing command 'save' ...
+=================================================================
+==10648==ERROR: AddressSanitizer: stack-use-after-scope on address 0x7ffee8123814 at pc 0x556a139f2595 bp 0x7ffee8123440 sp 0x7ffee8123430
+READ of size 4 at 0x7ffee8123814 thread T0
+    #0 0x556a139f2594 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
+    #1 0x556a13a3d748 in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
+    #2 0x556a139fa516 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:197
+    #3 0x556a139f3773 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:48
+    #4 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #5 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #6 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #7 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #9 0x7f6d272cee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #10 0x556a139e2f14 in _start (/home/rodri/prog/Projeto-Programacao/test+0x7cf14)
+
+Address 0x7ffee8123814 is located in stack of thread T0 at offset 356 in frame
+    #0 0x556a139f33eb in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:34
+
+  This frame has 22 object(s):
+    [48, 51) 'color_1' (line 77)
+    [64, 67) 'color_2' (line 77)
+    [80, 83) 'fill' (line 92)
+    [96, 99) 'temp' (line 105)
+    [112, 115) 'color_temp' (line 116)
+    [128, 131) 'neutral' (line 127)
+    [144, 147) '<unknown>'
+    [160, 163) '<unknown>'
+    [176, 179) '<unknown>'
+    [192, 196) 'top_corner_x' (line 91)
+    [208, 212) 'top_corner_y' (line 91)
+    [224, 228) 'width' (line 91)
+    [240, 244) 'height' (line 91)
+    [256, 260) 'top_corner_x' (line 128)
+    [272, 276) 'top_corner_y' (line 128)
+    [288, 292) 'top_corner_x' (line 143)
+    [304, 308) 'top_corner_y' (line 143)
+    [320, 324) 'width' (line 143)
+    [336, 340) 'height' (line 143)
+    [352, 368) 'image_temp' (line 145) <== Memory access at offset 356 is inside this variable
+    [384, 416) 'command' (line 35)
+    [448, 480) 'filename' (line 126)
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-scope /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
+Shadow bytes around the buggy address:
+  0x10005d01c6b0: 00 00 00 00 f3 f3 f3 f3 00 00 00 00 00 00 00 00
+  0x10005d01c6c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x10005d01c6d0: 00 00 00 00 00 00 f1 f1 f1 f1 f1 f1 03 f2 03 f2
+  0x10005d01c6e0: 03 f2 03 f2 03 f2 03 f2 f8 f2 03 f2 03 f2 04 f2
+  0x10005d01c6f0: 04 f2 04 f2 04 f2 04 f2 04 f2 f8 f2 f8 f2 f8 f2
+=>0x10005d01c700: f8 f2[f8]f8 f2 f2 00 00 00 00 f2 f2 f2 f2 00 00
+  0x10005d01c710: 00 00 f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00
+  0x10005d01c720: 00 00 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 f2 f2
+  0x10005d01c730: f2 f2 f8 f8 f8 f8 f2 f2 f2 f2 f8 f8 f8 f8 f2 f2
+  0x10005d01c740: f2 f2 00 00 00 00 f2 f2 f2 f2 f8 f8 f8 f8 f2 f2
+  0x10005d01c750: f2 f2 f8 f8 f8 f8 f2 f2 f2 f2 00 00 00 00 f2 f2
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==10648==ABORTING
+>>>> [5] crop5 <<<<
+Executing command 'open' ...
+Executing command 'crop' ...
+Executing command 'crop' ...
+=================================================================
+==10649==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7f6d242deb96 at pc 0x556a139f8106 bp 0x7ffee8123610 sp 0x7ffee8123600
+READ of size 3 at 0x7f6d242deb96 thread T0
+    #0 0x556a139f8105 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:148
+    #1 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #2 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #3 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #4 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #5 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #6 0x7f6d272cee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #7 0x556a139e2f14 in _start (/home/rodri/prog/Projeto-Programacao/test+0x7cf14)
+
+0x7f6d242deb96 is located 150 bytes to the right of 480000-byte region [0x7f6d24269800,0x7f6d242deb00)
+allocated by thread T0 here:
+    #0 0x7f6d27ee9337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x556a139f1f49 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x556a139f7e32 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:145
+    #3 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #4 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #5 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #6 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/rodri/prog/Projeto-Programacao/Script.cpp:148 in prog::Script::run()
+Shadow bytes around the buggy address:
+  0x0fee24853d20: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d60: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+=>0x0fee24853d70: fa fa[fa]fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853d80: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853d90: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853da0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853db0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853dc0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==10649==ABORTING
+>>>> [6] crop6 <<<<
+Executing command 'open' ...
+Executing command 'crop' ...
+Executing command 'crop' ...
+=================================================================
+==10661==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7f6d242deb1e at pc 0x556a139f8106 bp 0x7ffee8123610 sp 0x7ffee8123600
+READ of size 3 at 0x7f6d242deb1e thread T0
+    #0 0x556a139f8105 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:148
+    #1 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #2 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #3 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #4 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #5 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #6 0x7f6d272cee3f in __libc_start_main_impl ../csu/libc-start.c:392
+    #7 0x556a139e2f14 in _start (/home/rodri/prog/Projeto-Programacao/test+0x7cf14)
+
+0x7f6d242deb1e is located 30 bytes to the right of 480000-byte region [0x7f6d24269800,0x7f6d242deb00)
+allocated by thread T0 here:
+    #0 0x7f6d27ee9337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x556a139f1f49 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x556a139f7e32 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:145
+    #3 0x556a139e42bb in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:43
+    #4 0x556a139e50bd in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:79
+    #5 0x556a139e6f33 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) /home/rodri/prog/Projeto-Programacao/test.cpp:165
+    #6 0x556a139e3380 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7f6d272ced8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/rodri/prog/Projeto-Programacao/Script.cpp:148 in prog::Script::run()
+Shadow bytes around the buggy address:
+  0x0fee24853d10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d20: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d30: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0fee24853d50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x0fee24853d60: fa fa fa[fa]fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853d70: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853d80: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853d90: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853da0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0fee24853db0: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==10661==ABORTING
