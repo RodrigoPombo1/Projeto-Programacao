@@ -142,13 +142,14 @@ namespace prog {
             if (command == "crop") {
                 int top_corner_x, top_corner_y, width, height;
                 input >> top_corner_x >> top_corner_y >> width >> height;
-                Image image_temp = Image(width, height);
+                Image* image_temp = new Image(width, height);
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
-                        image_temp.at(x, y) = image->at(x + top_corner_x, y + top_corner_y);
+                        image_temp->at(x, y) = image->at(x + top_corner_x, y + top_corner_y);
                     }
                 }
-                image = &image_temp;
+                delete[] image;
+                image = image_temp;
                 continue;
             }
             // Rotate image left by 90 degrees.
@@ -159,6 +160,7 @@ namespace prog {
                         image_temp->at(y, x) = image->at(image->width() - x - 1, y);
                     }
                 }
+                delete[] image;
                 image = image_temp;
                 continue;
             }
@@ -170,6 +172,7 @@ namespace prog {
                         image_temp->at(y, x) = image->at(x, y - image->height() - 1);
                     }
                 }
+                delete[] image;
                 image = image_temp;
                 continue;
             }
