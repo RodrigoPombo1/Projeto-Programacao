@@ -138,7 +138,7 @@ namespace prog {
                 continue;
             }
             // usage: "crop x y w h"
-            // Crop the image, reducing it to all pixels contained in the rectangle defined by top-left corner (x, y), width w, and height h.You may assume that the rectangle is always within the current image bounds.
+            // Crop the image, reducing it to all pixels contained in the rectangle defined by top-left corner (x, y), width w, and height h.
             if (command == "crop") {
                 int top_corner_x, top_corner_y, width, height;
                 input >> top_corner_x >> top_corner_y >> width >> height;
@@ -148,7 +148,7 @@ namespace prog {
                         image_temp->at(x, y) = image->at(x + top_corner_x, y + top_corner_y);
                     }
                 }
-                delete[] image;
+                delete image;
                 image = image_temp;
                 continue;
             }
@@ -160,7 +160,7 @@ namespace prog {
                         image_temp->at(y, x) = image->at(image->width() - x - 1, y);
                     }
                 }
-                delete[] image;
+                delete image;
                 image = image_temp;
                 continue;
             }
@@ -172,7 +172,7 @@ namespace prog {
                         image_temp->at(y, x) = image->at(x, y - image->height() - 1);
                     }
                 }
-                delete[] image;
+                delete image;
                 image = image_temp;
                 continue;
             }
