@@ -155,9 +155,9 @@ namespace prog {
             // Rotate image left by 90 degrees.
             if (command == "rotate_left") {
                 Image* image_temp = new Image(image->height(), image->width());
-                for (int y = 0; y < image->height(); y++) {
-                    for (int x = 0; x < image->width(); x++) {
-                        image_temp->at(y, x) = image->at(image->width() - x - 1, y);
+                for (int x = 0; x < image->width(); x++) {
+                    for (int y = 0; y < image->height(); y++) {
+                        image_temp->at(y, image->width() - x - 1) = image->at(x, y);
                     }
                 }
                 delete image;
@@ -167,9 +167,9 @@ namespace prog {
             // Rotate image right by 90 degrees.
             if (command == "rotate_right") {
                 Image* image_temp = new Image(image->height(), image->width());
-                for (int y = 0; y < image->height(); y++) {
-                    for (int x = 0; x < image->width(); x++) {
-                        image_temp->at(y, x) = image->at(x, y - image->height() - 1);
+                for (int x = 0; x < image->width(); x++) {
+                    for (int y = 0; y < image->height(); y++) {
+                        image_temp->at(image->height() - y - 1, x) = image->at(x, y);
                     }
                 }
                 delete image;
