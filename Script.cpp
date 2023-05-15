@@ -91,8 +91,8 @@ namespace prog {
                 int top_corner_x, top_corner_y, width, height;
                 Color fill;
                 input >> top_corner_x >> top_corner_y >> width >> height >> fill;
-                for (int y = top_corner_y; y < height; y++) {
-                    for (int x = top_corner_x; x < width; x++) {
+                for (int y = top_corner_y; y < top_corner_y + height; y++) {
+                    for (int x = top_corner_x; x < top_corner_x + width; x++) {
                         image->at(x, y) = fill;
                     }
                 }
