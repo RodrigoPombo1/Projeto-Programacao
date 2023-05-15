@@ -190,6 +190,47 @@ namespace prog {
             }
             // usage: "median_filter ws"
             // Apply a median filter with window size ws >= 3 to the current image.
+
+            // if (command == "median_filter") {
+            //     int window_size;
+            //     input >> window_size;
+            //     Image* image_temp = new Image(image->width(), image->height());
+            //     // itera sobre todos os pixeis da imagem
+            //     for (int y = 0; y < image->height(); y++) {
+            //         for (int x = 0; x < image->width(); x++) {
+            //             vector<rgb_value> red_values, green_values, blue_values;
+            //             // itera sobre todos os pixeis da janela
+            //             for (int neighbor_y = y - window_size / 2; neighbor_y <= y + window_size / 2; neighbor_y++) {
+            //                 for (int neighbor_x = x - window_size / 2; neighbor_x <= x + window_size / 2; neighbor_x++) {
+            //                     // verifica se o pixel está dentro da imagem
+            //                     if (neighbor_x >= 0 && neighbor_x < image->width() && neighbor_y >= 0 && neighbor_y < image->height()) {
+            //                         red_values.push_back(image->at(neighbor_x, neighbor_y).red());
+            //                         green_values.push_back(image->at(neighbor_x, neighbor_y).green());
+            //                         blue_values.push_back(image->at(neighbor_x, neighbor_y).blue());
+            //                     }
+            //                 }
+            //             }
+            //             // sort dos valores
+            //             sort(red_values.begin(), red_values.end());
+            //             sort(green_values.begin(), green_values.end());
+            //             sort(blue_values.begin(), blue_values.end());
+            //             size_t size_vector = red_values.size();
+            //             // verifica se o tamanho do vector é par ou impar
+            //             if (size_vector % 2) {
+            //                 image_temp->at(x, y).red() = red_values[size_vector / 2];
+            //                 image_temp->at(x, y).green() = green_values[size_vector / 2];
+            //                 image_temp->at(x, y).blue() = blue_values[size_vector / 2];
+            //             } else {
+            //                 image_temp->at(x, y).red() = (red_values[size_vector / 2] + red_values[size_vector / 2 - 1]) / 2;
+            //                 image_temp->at(x, y).green() = (green_values[size_vector / 2] + green_values[size_vector / 2 - 1]) / 2;
+            //                 image_temp->at(x, y).blue() = (blue_values[size_vector / 2] + blue_values[size_vector / 2 - 1]) / 2;
+            //             }
+            //         }
+            //     }
+            //     delete image;
+            //     image = image_temp;
+            //     continue;
+            // }
             if (command == "median_filter") {
                 int window_size;
                 input >> window_size;
@@ -197,32 +238,44 @@ namespace prog {
                 // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
-                        vector<rgb_value> red_values, green_values, blue_values;
+                        // em vez de usarmos vetores estamos a usar arrays para ser mais rapida a execução
+                        rgb_value* red_values = new rgb_value[window_size * window_size];
+                        rgb_value* green_values = new rgb_value[window_size * window_size];
+                        rgb_value* blue_values = new rgb_value[window_size * window_size];
+                        int pixel_count = 0;
                         // itera sobre todos os pixeis da janela
                         for (int neighbor_y = y - window_size / 2; neighbor_y <= y + window_size / 2; neighbor_y++) {
                             for (int neighbor_x = x - window_size / 2; neighbor_x <= x + window_size / 2; neighbor_x++) {
                                 // verifica se o pixel está dentro da imagem
                                 if (neighbor_x >= 0 && neighbor_x < image->width() && neighbor_y >= 0 && neighbor_y < image->height()) {
-                                    red_values.push_back(image->at(neighbor_x, neighbor_y).red());
-                                    green_values.push_back(image->at(neighbor_x, neighbor_y).green());
-                                    blue_values.push_back(image->at(neighbor_x, neighbor_y).blue());
+                                    red_values[pixel_count] = image->at(neighbor_x, neighbor_y).red();
+                                    green_values[pixel_count] = image->at(neighbor_x, neighbor_y).green();
+                                    blue_values[pixel_count] = image->at(neighbor_x, neighbor_y).blue();
+                                    pixel_count++;
                                 }
                             }
                         }
+                        // transformar em vetores para podermos usar o algoritmo de sort
+                        vector<rgb_value> red_values_vector(red_values, red_values + pixel_count);
+                        vector<rgb_value> green_values_vector(green_values, green_values + pixel_count);
+                        vector<rgb_value> blue_values_vector(blue_values, blue_values + pixel_count);
+                        // delete dos arrays
+                        delete[] red_values;
+                        delete[] green_values;
+                        delete[] blue_values;
                         // sort dos valores
-                        sort(red_values.begin(), red_values.end());
-                        sort(green_values.begin(), green_values.end());
-                        sort(blue_values.begin(), blue_values.end());
-                        size_t size_vector = red_values.size();
+                        sort(red_values_vector.begin(), red_values_vector.end());
+                        sort(green_values_vector.begin(), green_values_vector.end());
+                        sort(blue_values_vector.begin(), blue_values_vector.end());
                         // verifica se o tamanho do vector é par ou impar
-                        if (size_vector % 2) {
-                            image_temp->at(x, y).red() = red_values[size_vector / 2];
-                            image_temp->at(x, y).green() = green_values[size_vector / 2];
-                            image_temp->at(x, y).blue() = blue_values[size_vector / 2];
+                        if (pixel_count % 2) {
+                            image_temp->at(x, y).red() = red_values_vector[pixel_count / 2];
+                            image_temp->at(x, y).green() = green_values_vector[pixel_count / 2];
+                            image_temp->at(x, y).blue() = blue_values_vector[pixel_count / 2];
                         } else {
-                            image_temp->at(x, y).red() = (red_values[size_vector / 2] + red_values[size_vector / 2 - 1]) / 2;
-                            image_temp->at(x, y).green() = (green_values[size_vector / 2] + green_values[size_vector / 2 - 1]) / 2;
-                            image_temp->at(x, y).blue() = (blue_values[size_vector / 2] + blue_values[size_vector / 2 - 1]) / 2;
+                            image_temp->at(x, y).red() = (red_values_vector[pixel_count / 2] + red_values_vector[pixel_count / 2 - 1]) / 2;
+                            image_temp->at(x, y).green() = (green_values_vector[pixel_count / 2] + green_values_vector[pixel_count / 2 - 1]) / 2;
+                            image_temp->at(x, y).blue() = (blue_values_vector[pixel_count / 2] + blue_values_vector[pixel_count / 2 - 1]) / 2;
                         }
                     }
                 }
