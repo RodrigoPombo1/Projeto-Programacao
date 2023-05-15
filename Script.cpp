@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 #include "Script.hpp"
 #include "PNG.hpp"
 #include "XPM2.hpp"
@@ -50,6 +52,7 @@ namespace prog {
             }
             // Transforms each individual pixel (r, g, b) to (255-r,255-g,255-b).
             if (command == "invert") {
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
                         image->at(x, y).red() = 255 - image->at(x, y).red();
@@ -61,6 +64,7 @@ namespace prog {
             }
             // Transforms each individual pixel (r, g, b) to (v, v, v) where v = (r + g + b)/3.
             if (command == "to_gray_scale") {
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
                         int gray = (image->at(x, y).red() + image->at(x, y).green() + image->at(x, y).blue()) / 3;
@@ -76,6 +80,7 @@ namespace prog {
             if (command == "replace") {
                 Color color_1, color_2;
                 input >> color_1 >> color_2;
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
                         if (image->at(x, y).red() == color_1.red() && image->at(x, y).green() == color_1.green() && image->at(x, y).blue() == color_1.blue()) {
@@ -91,6 +96,7 @@ namespace prog {
                 int top_corner_x, top_corner_y, width, height;
                 Color fill;
                 input >> top_corner_x >> top_corner_y >> width >> height >> fill;
+                // itera sobre todos os pixeis da imagem
                 for (int y = top_corner_y; y < top_corner_y + height; y++) {
                     for (int x = top_corner_x; x < top_corner_x + width; x++) {
                         image->at(x, y) = fill;
@@ -100,6 +106,7 @@ namespace prog {
             }
             // Mirror image horizontally.
             if (command == "h_mirror") {
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width() / 2; x++) {
                         Color temp = image->at(x, y);
@@ -111,6 +118,7 @@ namespace prog {
             }
             // Mirror image vertically.
             if (command == "v_mirror") {
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height() / 2; y++) {
                     for (int x = 0; x < image->width(); x++) {
                         Color color_temp = image->at(x, y);
@@ -128,6 +136,7 @@ namespace prog {
                 int top_corner_x, top_corner_y;
                 input >> filename >> neutral >> top_corner_x >> top_corner_y;
                 Image* image_to_add = loadFromPNG(filename);
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image_to_add->height(); y++) {
                     for (int x = 0; x < image_to_add->width(); x++) {
                         if (image_to_add->at(x, y).red() != neutral.red() || image_to_add->at(x, y).green() != neutral.green() || image_to_add->at(x, y).blue() != neutral.blue()) {
@@ -144,6 +153,7 @@ namespace prog {
                 int top_corner_x, top_corner_y, width, height;
                 input >> top_corner_x >> top_corner_y >> width >> height;
                 Image* image_temp = new Image(width, height);
+                // iterar sobre todos os pixeis da imagem
                 for (int y = 0; y < height; y++) {
                     for (int x = 0; x < width; x++) {
                         image_temp->at(x, y) = image->at(x + top_corner_x, y + top_corner_y);
@@ -156,6 +166,7 @@ namespace prog {
             // Rotate image left by 90 degrees.
             if (command == "rotate_left") {
                 Image* image_temp = new Image(image->height(), image->width());
+                // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
                         image_temp->at(y, image->width() - x - 1) = image->at(x, y);
@@ -171,6 +182,48 @@ namespace prog {
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
                         image_temp->at(image->height() - y - 1, x) = image->at(x, y);
+                    }
+                }
+                delete image;
+                image = image_temp;
+                continue;
+            }
+            // usage: "median_filter ws"
+            // Apply a median filter with window size ws >= 3 to the current image.
+            if (command == "median_filter") {
+                int window_size;
+                input >> window_size;
+                Image* image_temp = new Image(image->width(), image->height());
+                // itera sobre todos os pixeis da imagem
+                for (int y = 0; y < image->height(); y++) {
+                    for (int x = 0; x < image->width(); x++) {
+                        vector<rgb_value> red_values, green_values, blue_values;
+                        // itera sobre todos os pixeis da janela
+                        for (int neighbor_y = y - window_size / 2; neighbor_y <= y + window_size / 2; neighbor_y++) {
+                            for (int neighbor_x = x - window_size / 2; neighbor_x <= x + window_size / 2; neighbor_x++) {
+                                // verifica se o pixel está dentro da imagem
+                                if (neighbor_x >= 0 && neighbor_x < image->width() && neighbor_y >= 0 && neighbor_y < image->height()) {
+                                    red_values.push_back(image->at(neighbor_x, neighbor_y).red());
+                                    green_values.push_back(image->at(neighbor_x, neighbor_y).green());
+                                    blue_values.push_back(image->at(neighbor_x, neighbor_y).blue());
+                                }
+                            }
+                        }
+                        // sort dos valores
+                        sort(red_values.begin(), red_values.end());
+                        sort(green_values.begin(), green_values.end());
+                        sort(blue_values.begin(), blue_values.end());
+                        size_t size_vector = red_values.size();
+                        // verifica se o tamanho do vector é par ou impar
+                        if (size_vector % 2) {
+                            image_temp->at(x, y).red() = red_values[size_vector / 2];
+                            image_temp->at(x, y).green() = green_values[size_vector / 2];
+                            image_temp->at(x, y).blue() = blue_values[size_vector / 2];
+                        } else {
+                            image_temp->at(x, y).red() = (red_values[size_vector / 2] + red_values[size_vector / 2 - 1]) / 2;
+                            image_temp->at(x, y).green() = (green_values[size_vector / 2] + green_values[size_vector / 2 - 1]) / 2;
+                            image_temp->at(x, y).blue() = (blue_values[size_vector / 2] + blue_values[size_vector / 2 - 1]) / 2;
+                        }
                     }
                 }
                 delete image;
