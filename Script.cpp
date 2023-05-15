@@ -75,7 +75,7 @@ namespace prog {
             // Replaces all (r1, g1, b1) pixels by (r2, g2, b2).
             if (command == "replace") {
                 Color color_1, color_2;
-                input >> color_1.red() >> color_1.green() >> color_1.blue() >> color_2.red() >> color_2.green() >> color_2.blue();
+                input >> color_1 >> color_2;
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
                         if (image->at(x, y).red() == color_1.red() && image->at(x, y).green() == color_1.green() && image->at(x, y).blue() == color_1.blue()) {
@@ -90,7 +90,7 @@ namespace prog {
             if (command == "fill") {
                 int top_corner_x, top_corner_y, width, height;
                 Color fill;
-                input >> top_corner_x >> top_corner_y >> width >> height >> fill.red() >> fill.green() >> fill.blue();
+                input >> top_corner_x >> top_corner_y >> width >> height >> fill;
                 for (int y = top_corner_y; y < height; y++) {
                     for (int x = top_corner_x; x < width; x++) {
                         image->at(x, y) = fill;
@@ -126,15 +126,16 @@ namespace prog {
                 string filename;
                 Color neutral;
                 int top_corner_x, top_corner_y;
-                input >> filename >> neutral.red() >> neutral.green() >> neutral.blue() >> top_corner_x >> top_corner_y;
+                input >> filename >> neutral >> top_corner_x >> top_corner_y;
                 Image* image_to_add = loadFromPNG(filename);
                 for (int y = 0; y < image_to_add->height(); y++) {
                     for (int x = 0; x < image_to_add->width(); x++) {
                         if (image_to_add->at(x, y).red() != neutral.red() || image_to_add->at(x, y).green() != neutral.green() || image_to_add->at(x, y).blue() != neutral.blue()) {
-                            image->at(x + top_corner_x, y + top_corner_y) = image_to_add->at(x, y);
+                            image->at(top_corner_x + x, top_corner_y + y) = image_to_add->at(x, y);
                         }
                     }
                 }
+                delete image_to_add;
                 continue;
             }
             // usage: "crop x y w h"
@@ -155,8 +156,8 @@ namespace prog {
             // Rotate image left by 90 degrees.
             if (command == "rotate_left") {
                 Image* image_temp = new Image(image->height(), image->width());
-                for (int x = 0; x < image->width(); x++) {
-                    for (int y = 0; y < image->height(); y++) {
+                for (int y = 0; y < image->height(); y++) {
+                    for (int x = 0; x < image->width(); x++) {
                         image_temp->at(y, image->width() - x - 1) = image->at(x, y);
                     }
                 }
@@ -167,8 +168,8 @@ namespace prog {
             // Rotate image right by 90 degrees.
             if (command == "rotate_right") {
                 Image* image_temp = new Image(image->height(), image->width());
-                for (int x = 0; x < image->width(); x++) {
-                    for (int y = 0; y < image->height(); y++) {
+                for (int y = 0; y < image->height(); y++) {
+                    for (int x = 0; x < image->width(); x++) {
                         image_temp->at(image->height() - y - 1, x) = image->at(x, y);
                     }
                 }
