@@ -238,7 +238,7 @@ namespace prog {
                 // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
-                        // em vez de usarmos vetores estamos a usar arrays para ser mais rapida a execução
+                        // em vez de usarmos vetores estamos a usar arrays para ser mais rapida a execução embora use ligeiramente mais memória do que necessário nas bordas
                         rgb_value* red_values = new rgb_value[window_size * window_size];
                         rgb_value* green_values = new rgb_value[window_size * window_size];
                         rgb_value* blue_values = new rgb_value[window_size * window_size];
