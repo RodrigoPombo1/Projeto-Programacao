@@ -83,7 +83,7 @@ namespace prog {
                 // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image->height(); y++) {
                     for (int x = 0; x < image->width(); x++) {
-                        if (image->at(x, y).red() == color_1.red() && image->at(x, y).green() == color_1.green() && image->at(x, y).blue() == color_1.blue()) {
+                        if (image->at(x, y) == color_1) {
                             image->at(x, y) = color_2;
                         }
                     }
@@ -139,7 +139,7 @@ namespace prog {
                 // itera sobre todos os pixeis da imagem
                 for (int y = 0; y < image_to_add->height(); y++) {
                     for (int x = 0; x < image_to_add->width(); x++) {
-                        if (image_to_add->at(x, y).red() != neutral.red() || image_to_add->at(x, y).green() != neutral.green() || image_to_add->at(x, y).blue() != neutral.blue()) {
+                        if (!(image_to_add->at(x, y) == neutral)) {
                             image->at(top_corner_x + x, top_corner_y + y) = image_to_add->at(x, y);
                         }
                     }
