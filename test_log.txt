@@ -1,130 +1,160 @@
->>>> [1] xpm2_open1 <<<<
+>>>> [1] xpm2_save1 <<<<
+Executing command 'open' ...
+Executing command 'xpm2_save' ...
+Executing command 'blank' ...
 Executing command 'xpm2_open' ...
-Executing command 'input/blarg.xpm' ...
 Executing command 'save' ...
-PNG.cpp:31:30: runtime error: member call on null pointer of type 'const struct Image'
-Image.cpp:26:18: runtime error: member access within null pointer of type 'const struct Image'
-AddressSanitizer:DEADLYSIGNAL
-=================================================================
-==13617==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000004 (pc 0x559bad97f879 bp 0x7ffeb3832a70 sp 0x7ffeb3832a60 T0)
-==13617==The signal is caused by a READ memory access.
-==13617==Hint: address points to the zero page.
-    #0 0x559bad97f879 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
-    #1 0x559bad9d3dcf in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
-    #2 0x559bad989904 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:266
-    #3 0x559bad980aa0 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:50
-    #4 0x559bad97159b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc359b)
-    #5 0x559bad97239d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc439d)
-    #6 0x559bad974213 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc6213)
-    #7 0x559bad970660 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
-    #8 0x7fc53b726d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-    #9 0x7fc53b726e3f in __libc_start_main_impl ../csu/libc-start.c:392
-    #10 0x559bad9701f4 in _start (/home/rodri/prog/Projeto-Programacao/test+0xc21f4)
 
-AddressSanitizer can not provide additional info.
-SUMMARY: AddressSanitizer: SEGV /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
-==13617==ABORTING
->>>> [2] xpm2_open2 <<<<
+=================================================================
+==24116==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df41c7 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:99
+    #1 0x5652b7cdca7f in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #2 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #3 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #4 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #5 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #6 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+Indirect leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df4337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x5652b7cd2311 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x5652b7cdcb1c in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #3 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #4 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #5 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #6 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #7 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 19 byte(s) leaked in 2 allocation(s).
+>>>> [2] xpm2_save2 <<<<
+Executing command 'open' ...
+Executing command 'xpm2_save' ...
+Executing command 'blank' ...
 Executing command 'xpm2_open' ...
-Executing command 'input/squares.xpm' ...
 Executing command 'save' ...
-PNG.cpp:31:30: runtime error: member call on null pointer of type 'const struct Image'
-Image.cpp:26:18: runtime error: member access within null pointer of type 'const struct Image'
-AddressSanitizer:DEADLYSIGNAL
-=================================================================
-==13618==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000004 (pc 0x559bad97f879 bp 0x7ffeb3832a70 sp 0x7ffeb3832a60 T0)
-==13618==The signal is caused by a READ memory access.
-==13618==Hint: address points to the zero page.
-    #0 0x559bad97f879 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
-    #1 0x559bad9d3dcf in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
-    #2 0x559bad989904 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:266
-    #3 0x559bad980aa0 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:50
-    #4 0x559bad97159b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc359b)
-    #5 0x559bad97239d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc439d)
-    #6 0x559bad974213 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc6213)
-    #7 0x559bad970660 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
-    #8 0x7fc53b726d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-    #9 0x7fc53b726e3f in __libc_start_main_impl ../csu/libc-start.c:392
-    #10 0x559bad9701f4 in _start (/home/rodri/prog/Projeto-Programacao/test+0xc21f4)
 
-AddressSanitizer can not provide additional info.
-SUMMARY: AddressSanitizer: SEGV /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
-==13618==ABORTING
->>>> [3] xpm2_open3 <<<<
+=================================================================
+==24121==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df41c7 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:99
+    #1 0x5652b7cdca7f in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #2 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #3 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #4 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #5 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #6 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+Indirect leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df4337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x5652b7cd2311 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x5652b7cdcb1c in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #3 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #4 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #5 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #6 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #7 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 19 byte(s) leaked in 2 allocation(s).
+>>>> [3] xpm2_save3 <<<<
+Executing command 'open' ...
+Executing command 'xpm2_save' ...
+Executing command 'blank' ...
 Executing command 'xpm2_open' ...
-Executing command 'input/tetris.xpm' ...
 Executing command 'save' ...
-PNG.cpp:31:30: runtime error: member call on null pointer of type 'const struct Image'
-Image.cpp:26:18: runtime error: member access within null pointer of type 'const struct Image'
-AddressSanitizer:DEADLYSIGNAL
-=================================================================
-==13619==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000004 (pc 0x559bad97f879 bp 0x7ffeb3832a70 sp 0x7ffeb3832a60 T0)
-==13619==The signal is caused by a READ memory access.
-==13619==Hint: address points to the zero page.
-    #0 0x559bad97f879 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
-    #1 0x559bad9d3dcf in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
-    #2 0x559bad989904 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:266
-    #3 0x559bad980aa0 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:50
-    #4 0x559bad97159b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc359b)
-    #5 0x559bad97239d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc439d)
-    #6 0x559bad974213 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc6213)
-    #7 0x559bad970660 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
-    #8 0x7fc53b726d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-    #9 0x7fc53b726e3f in __libc_start_main_impl ../csu/libc-start.c:392
-    #10 0x559bad9701f4 in _start (/home/rodri/prog/Projeto-Programacao/test+0xc21f4)
 
-AddressSanitizer can not provide additional info.
-SUMMARY: AddressSanitizer: SEGV /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
-==13619==ABORTING
->>>> [4] xpm2_open4 <<<<
+=================================================================
+==24123==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df41c7 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:99
+    #1 0x5652b7cdca7f in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #2 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #3 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #4 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #5 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #6 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+Indirect leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df4337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x5652b7cd2311 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x5652b7cdcb1c in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #3 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #4 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #5 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #6 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #7 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 19 byte(s) leaked in 2 allocation(s).
+>>>> [4] xpm2_save4 <<<<
+Executing command 'open' ...
+Executing command 'xpm2_save' ...
+Executing command 'blank' ...
 Executing command 'xpm2_open' ...
-Executing command 'input/mondrian.xpm' ...
 Executing command 'save' ...
-PNG.cpp:31:30: runtime error: member call on null pointer of type 'const struct Image'
-Image.cpp:26:18: runtime error: member access within null pointer of type 'const struct Image'
-AddressSanitizer:DEADLYSIGNAL
-=================================================================
-==13620==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000004 (pc 0x559bad97f879 bp 0x7ffeb3832a70 sp 0x7ffeb3832a60 T0)
-==13620==The signal is caused by a READ memory access.
-==13620==Hint: address points to the zero page.
-    #0 0x559bad97f879 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
-    #1 0x559bad9d3dcf in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
-    #2 0x559bad989904 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:266
-    #3 0x559bad980aa0 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:50
-    #4 0x559bad97159b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc359b)
-    #5 0x559bad97239d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc439d)
-    #6 0x559bad974213 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc6213)
-    #7 0x559bad970660 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
-    #8 0x7fc53b726d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-    #9 0x7fc53b726e3f in __libc_start_main_impl ../csu/libc-start.c:392
-    #10 0x559bad9701f4 in _start (/home/rodri/prog/Projeto-Programacao/test+0xc21f4)
 
-AddressSanitizer can not provide additional info.
-SUMMARY: AddressSanitizer: SEGV /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
-==13620==ABORTING
->>>> [5] xpm2_open5 <<<<
+=================================================================
+==24125==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df41c7 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:99
+    #1 0x5652b7cdca7f in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #2 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #3 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #4 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #5 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #6 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+Indirect leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df4337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x5652b7cd2311 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x5652b7cdcb1c in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #3 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #4 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #5 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #6 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #7 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 19 byte(s) leaked in 2 allocation(s).
+>>>> [5] xpm2_save5 <<<<
+Executing command 'open' ...
+Executing command 'xpm2_save' ...
+Executing command 'blank' ...
 Executing command 'xpm2_open' ...
-Executing command 'input/lion.xpm' ...
 Executing command 'save' ...
-PNG.cpp:31:30: runtime error: member call on null pointer of type 'const struct Image'
-Image.cpp:26:18: runtime error: member access within null pointer of type 'const struct Image'
-AddressSanitizer:DEADLYSIGNAL
-=================================================================
-==13621==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000004 (pc 0x559bad97f879 bp 0x7ffeb3832a70 sp 0x7ffeb3832a60 T0)
-==13621==The signal is caused by a READ memory access.
-==13621==Hint: address points to the zero page.
-    #0 0x559bad97f879 in prog::Image::height() const /home/rodri/prog/Projeto-Programacao/Image.cpp:26
-    #1 0x559bad9d3dcf in prog::saveToPNG(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, prog::Image const*) /home/rodri/prog/Projeto-Programacao/PNG.cpp:31
-    #2 0x559bad989904 in prog::Script::save() /home/rodri/prog/Projeto-Programacao/Script.cpp:266
-    #3 0x559bad980aa0 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:50
-    #4 0x559bad97159b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc359b)
-    #5 0x559bad97239d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc439d)
-    #6 0x559bad974213 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xc6213)
-    #7 0x559bad970660 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
-    #8 0x7fc53b726d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
-    #9 0x7fc53b726e3f in __libc_start_main_impl ../csu/libc-start.c:392
-    #10 0x559bad9701f4 in _start (/home/rodri/prog/Projeto-Programacao/test+0xc21f4)
 
-AddressSanitizer can not provide additional info.
-SUMMARY: AddressSanitizer: SEGV /home/rodri/prog/Projeto-Programacao/Image.cpp:26 in prog::Image::height() const
-==13621==ABORTING
+=================================================================
+==24138==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df41c7 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:99
+    #1 0x5652b7cdca7f in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #2 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #3 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #4 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #5 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #6 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #7 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+Indirect leak of 3 byte(s) in 1 object(s) allocated from:
+    #0 0x7fe9b8df4337 in operator new[](unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:102
+    #1 0x5652b7cd2311 in prog::Image::Image(int, int, prog::Color const&) /home/rodri/prog/Projeto-Programacao/Image.cpp:10
+    #2 0x5652b7cdcb1c in prog::Script::blank() /home/rodri/prog/Projeto-Programacao/Script.cpp:274
+    #3 0x5652b7cd3b56 in prog::Script::run() /home/rodri/prog/Projeto-Programacao/Script.cpp:45
+    #4 0x5652b7cc455b in prog::TestDriver::test_script(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb155b)
+    #5 0x5652b7cc535d in prog::TestDriver::run_test(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb235d)
+    #6 0x5652b7cc71d3 in prog::TestDriver::test_scripts(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (/home/rodri/prog/Projeto-Programacao/test+0xb41d3)
+    #7 0x5652b7cc3620 in main /home/rodri/prog/Projeto-Programacao/test.cpp:186
+    #8 0x7fe9b81d9d8f in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+
+SUMMARY: AddressSanitizer: 19 byte(s) leaked in 2 allocation(s).

@@ -4,6 +4,9 @@
 #include <sstream>
 #include <map>
 #include <cmath>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
 namespace prog {
@@ -68,7 +71,62 @@ namespace prog {
         return res_image;
     }
 
-    void saveToXPM2(const std::string& file, const Image* image) {
+    bool check_color_in_vector(const vector<pair<Color, char>> vector, const Color color) {
+        for (pair<Color, char> pair_color_to_char : vector) {
+            if (pair_color_to_char.first == color) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    string convert_from_rgb_value_to_hex(rgb_value value) {
+        map<int, char> int_hex =
+        {
+            {0, '0'}, {1, '1'}, {2, '2'}, {3, '3'}, {4, '4'}, {5, '5'}, {6, '6'}, {7, '7'},
+            {8, '8'}, {9, '9'}, {10, 'a'}, {11, 'b'}, {12, 'c'}, {13, 'd'}, {14, 'e'}, {15, 'f'}
+        };
+        string result = "";
+        result += int_hex[value / 16];
+        result += int_hex[value % 16];
+        return result;
+    }
+
+    void saveToXPM2(const std::string& file, const Image* image) {
+        ofstream output_file;
+        output_file.open(file);
+        vector<pair<Color, char>> color_to_char_vector;
+        size_t num_colors = 0;
+        // Saber cada cor e o seu valor hexadecimal.
+        for (int y = 0; y < image->height(); y++) {
+            for (int x = 0; x < image->width(); x++) {
+                if (!check_color_in_vector(color_to_char_vector, image->at(x, y))){
+                    color_to_char_vector.emplace_back(image->at(x, y), 'a' + num_colors);
+                    num_colors++;
+                }
+            }
+        }
+        // Escrever o inicio do ficheiro.
+        output_file << "! XPM2" << endl;
+        output_file << image->width() << " " << image->height() << " " << num_colors << " " << "1" << endl;
+        for (const auto& pair : color_to_char_vector) {
+            const Color& current_color = pair.first;
+            char char_of_current_color = pair.second;
+            output_file << char_of_current_color << " c " << "#" << convert_from_rgb_value_to_hex(current_color.red()) << convert_from_rgb_value_to_hex(current_color.green()) << convert_from_rgb_value_to_hex(current_color.blue()) << endl;
+        }
+
+        //Escrever a imagem.
+        for (int y = 0; y < image->height(); y++) {
+            for (int x = 0; x < image->width(); x++) {
+                const Color& pixel_color = image->at(x, y);
+                // Encontra a cor do pixel atual que está no vetor de cores para caracteres.
+                auto iterator_pair = find_if(color_to_char_vector.begin(), color_to_char_vector.end(), [&](pair<Color, char> element_pair) { return element_pair.first == pixel_color; });
+                if (iterator_pair != color_to_char_vector.end()) {
+                    output_file << iterator_pair->second;
+                }
+            }
+            output_file << endl;
+        }
+        output_file.close();
     }
 }

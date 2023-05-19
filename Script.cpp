@@ -242,6 +242,20 @@ namespace prog {
                 image = image_temp;
                 continue;
             }
+
+            if (command == "xpm2_open") {
+                string filename;
+                input >> filename;
+                image = loadFromXPM2(filename);
+                continue;
+            }
+
+            if (command == "xpm2_save") {
+                string filename;
+                input >> filename;
+                saveToXPM2(filename, image);
+                continue;
+            }
         }
     }
     void Script::open() {

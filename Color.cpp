@@ -30,4 +30,11 @@ namespace prog {
     rgb_value& Color::blue()  {
       return this->_blue;
     }
+
+    // só é usado para o XPM2.cpp na função saveToXPM2
+    bool operator==(const Color& color1, const Color& color2) {
+        return color1.red() == color2.red() &&
+            color1.green() == color2.green() &&
+            color1.blue() == color2.blue();
+    }
 }
